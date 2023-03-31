@@ -3,6 +3,7 @@ package main
 import (
 	"RateLimitAPI/Controllers"
 	"RateLimitAPI/DB"
+	"RateLimitAPI/Middlewares"
 	"log"
 	"net/http"
 )
@@ -10,20 +11,22 @@ import (
 func main() {
 
 	migrator, dbErr := DB.New()
-
 	migrator.AutoMigrateModels()
-
 	if dbErr != nil {
 		log.Print("database has error")
 	}
 
-	signupController := Controllers.SignUpController{
-		UserRepository: migrator,
+	signupController := Controllers.NewSignUpController(migrator)
+
+	limiter := Middlewares.NewRateLimiter(20)
+
+	commonMiddleware := []Middlewares.Middleware{
+		limiter.Limiter,
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", okHandler)
-	mux.HandleFunc("/signup", signupController.Handler)
+	mux.HandleFunc("/", Middlewares.MultipleMiddleware(okHandler, commonMiddleware...))
+	mux.HandleFunc("/signup", Middlewares.MultipleMiddleware(signupController.Handler, commonMiddleware...))
 
 	// Wrap the servemux with the limit middleware.
 	log.Print("Listening on :4000...")
