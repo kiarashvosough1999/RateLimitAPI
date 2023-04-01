@@ -1,0 +1,27 @@
+GET http://localhost:4000/
+Accept: application/json
+
+### If you don't want engage with auth procedure, use root route with no param or body, just to test rate limit.
+
+POST http://localhost:4000/signup
+Content-Type: application/json
+
+{
+  "username": "kia2002",
+  "password": "20121999"
+}
+
+### First singup then send sign in request after 20 second
+
+GET http://localhost:4000/signin
+Content-Type: application/json
+
+{
+  "username": "kia2002",
+  "password": "20121999"
+}
+
+### This will receive `Signed in successfully` for first time
+
+###
+
