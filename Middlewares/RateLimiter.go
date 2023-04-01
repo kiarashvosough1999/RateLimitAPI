@@ -78,6 +78,8 @@ func (l *RateLimiter) Limiter(next http.HandlerFunc) http.HandlerFunc {
 
 		// find ip of client
 		ip, _, err := net.SplitHostPort(r.RemoteAddr)
+
+		// for reverse proxy we should consider check this header
 		//log.Print(http.Header.Get(r.Header, "X-Forwarded-For"))
 		//log.Print(http.Header.Get(r.Header, "X-Real-IP"))
 		if err != nil {
@@ -86,12 +88,12 @@ func (l *RateLimiter) Limiter(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		// get limiter based on the client ip
+		// get limiter based on the client's ip
 		limiter := l.getVisitor(ip)
 
 		// check if limiter has available token
 		if limiter.Allow() == false {
-			http.Error(w, "Too many request", http.StatusTooManyRequests)
+			http.Error(w, "Too many request, wait for 20 seconds before retrying", http.StatusTooManyRequests)
 			return
 		}
 

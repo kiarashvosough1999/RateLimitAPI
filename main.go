@@ -17,6 +17,7 @@ func main() {
 	}
 
 	signupController := Controllers.NewSignUpController(migrator)
+	signinController := Controllers.NewSignInController(migrator)
 
 	limiter := Middlewares.NewRateLimiter(20, 1)
 
@@ -27,6 +28,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", Middlewares.MultipleMiddleware(okHandler, commonMiddleware...))
 	mux.HandleFunc("/signup", Middlewares.MultipleMiddleware(signupController.Handler, commonMiddleware...))
+	mux.HandleFunc("/signin", Middlewares.MultipleMiddleware(signinController.Handler, commonMiddleware...))
 
 	// Wrap the servemux with the limit middleware.
 	log.Print("Listening on :4000...")
