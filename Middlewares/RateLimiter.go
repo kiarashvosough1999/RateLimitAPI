@@ -23,8 +23,9 @@ type RateLimiter struct {
 	bucket   int
 }
 
-// NewRateLimiter create a new RateLimiter
-// every: is in seconds
+// NewRateLimiter create a new RateLimiter instance.
+// `every` is in seconds.
+// bucket determines how many attempt can client have within the `every` interval.
 func NewRateLimiter(every time.Duration, bucket int) *RateLimiter {
 	limiter := RateLimiter{
 		make(map[string]*Visitor),
@@ -36,8 +37,8 @@ func NewRateLimiter(every time.Duration, bucket int) *RateLimiter {
 	return &limiter
 }
 
-// get limiter for visitor, if the visitor is new instantiate a new visitor
-// Note that visitors that did not send request for 3 minutes will be eliminated from the list.
+// get limiter for visitor, if the visitor is new instantiate a new visitor.
+// Note that visitors that did not send any request for 3 minutes will be eliminated from the list.
 func (l *RateLimiter) getVisitor(ip string) *rate.Limiter {
 	l.mu.Lock()
 	defer l.mu.Unlock()

@@ -30,6 +30,8 @@ func (m *Migrator) AutoMigrateModels() {
 	}
 }
 
+// UserRepositoryInterface Implementation
+
 func (m *Migrator) UsernameExist(username string) (bool, error) {
 	var count int64 = 0
 	tx := m.db.Model(&Models.UserModel{}).Where("username = ?", username).Count(&count)
