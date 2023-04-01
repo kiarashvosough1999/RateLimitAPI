@@ -92,7 +92,7 @@ go run main.go
 You can observe the result for sending request twice, as we set the bucket to 1, 
 the second time we get `too many request response`
 
-> To test the routes, go to `Test` folder using JetBrains IDEs and perform HTTP request on [SignInTest](https://github.com/kiarashvosough1999/RateLimitAPI/blob/master/Tests/SignInTest.http)
+> To test the routes, go to `Test` folder using JetBrains IDEs and perform HTTP request on [SignInTest](https://github.com/kiarashvosough1999/RateLimitAPI/blob/master/Tests/SignInTests.http)
 
 ![](./screenshots/first.png)
 ![](./screenshots/second.png)
