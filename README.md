@@ -60,8 +60,23 @@ Based on the parameter on `main.go` line 22:
 ```go
 limiter := Middlewares.NewRateLimiter(20, 1)
 ```
-The code above set the rate at 20 seconds between each request and bucket to 1 meaning that in every 20 seconds we can make just 1 attempts to send request, 
-otherwise API will complain with `too many request` error.
+The code above set the rate at 20 seconds between each request and bucket to 1 meaning that in every 20 seconds we can make just 1 attempt to send request, 
+otherwise API will complain with `too many request` error with such response:
+
+```plain
+http://localhost:4000/[One of the routes]
+
+HTTP/1.1 429 Too Many Requests
+Content-Type: text/plain; charset=utf-8
+X-Content-Type-Options: nosniff
+Date: Sat, 01 Apr 2023 18:37:30 GMT
+Content-Length: 54
+
+Too many request, wait for 20 seconds before retrying
+
+
+Response code: 429 (Too Many Requests); Time: 1ms (1 ms); Content length: 54 bytes (54 B)
+```
 
 ## Installation
 
@@ -73,3 +88,19 @@ go run main.go
 ```
 
 ## Output
+
+You can observe the result for sending request twice, as we set the bucket to 1, 
+the second time we get `too many request response`
+
+> To test the routes, go to `Test` folder using Jetbrain IDEs and perform HTTP request on [SignInTest](https://github.com/kiarashvosough1999/RateLimitAPI/blob/master/Tests/Tests/SignInTest.http
+
+![](./screenshots/first.png)
+![](./screenshots/second.png)
+
+## Contribution
+
+Feel free to share your ideas or any other problems. Pull requests are welcomed.
+
+## License
+
+RateLimitAPI was released under an MIT license. See [LICENSE](https://github.com/kiarashvosough1999/RateLimitAPI/blob/master/LICENSE) for more information.
