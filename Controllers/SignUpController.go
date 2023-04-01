@@ -18,7 +18,7 @@ type SignUpController struct {
 	UserRepository Respositories.UserRepositoryInterface
 }
 
-func New(
+func NewSignUpController(
 	UserRepository Respositories.UserRepositoryInterface,
 ) *SignUpController {
 	return &SignUpController{
