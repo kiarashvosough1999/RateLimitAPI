@@ -18,7 +18,7 @@ func main() {
 
 	signupController := Controllers.NewSignUpController(migrator)
 
-	limiter := Middlewares.NewRateLimiter(20)
+	limiter := Middlewares.NewRateLimiter(20, 1)
 
 	commonMiddleware := []Middlewares.Middleware{
 		limiter.Limiter,
